@@ -1,3 +1,5 @@
+import sys
+
 n = int(input())
 arr = list(map(int, input().split()))
 
@@ -14,17 +16,18 @@ for i in range(n):
 
 		last = i
 
+if first is -1:
+	print('yes')
+	print('1 1')
+	sys.exit()
+
 partArr = arr[first:last+1]
 partArr.reverse()
 
-answer = True
 for i in range(len(partArr)):
-	if sortArr[i+first] is partArr[i]:
-		answer = False
-		break
+	if sortArr[i+first] is not partArr[i]:
+		print('no')
+		sys.exit()
 
-if answer:
-	print('yes')
-	print(first + 1, ' ', last + 1)
-else:
-	print('no')
+print('yes')
+print(first + 1, ' ', last + 1)

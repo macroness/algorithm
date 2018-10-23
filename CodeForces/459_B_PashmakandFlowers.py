@@ -1,11 +1,11 @@
 def factorial(n):
-	if n <= 1: 
-		return 1
-	else:
-		result = 1
-		for i in range(2, n+1):
-			result *= i
-	return result
+    if n <= 1: 
+        return 1
+    else:
+        result = 1
+        for i in range(2, n + 1):
+            result *= i
+    return result
 
 def nCr(n, r):
     numerator = 1
@@ -28,4 +28,5 @@ if a == 0:
     b = int(nCr(n, 2))
 else:
     b = flowers.count(flowers[-1]) * flowers.count(flowers[0])
+
 print (a, b)

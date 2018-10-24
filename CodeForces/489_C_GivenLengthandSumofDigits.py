@@ -34,7 +34,4 @@ if s == 1:
 else:
     min = min + "{0}".format(s)
 
-
-
 print (min[::-1], max)
-

@@ -23,3 +23,4 @@ def getPos(l, u, x):
 
 for a in listM:
     getPos(0, n, a)
+ 

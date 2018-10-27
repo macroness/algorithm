@@ -2,31 +2,37 @@
 #include <vector>
 
 using namespace std;
-/*
-int goRstr(int p, int catsNum, int count):
-	if p in visit:
-		return count
 
-	visit.add(p)
+static int m;
+int goRstr(const vector<vector<int> >& relArr, const int p, int catsNum, int count, vector<bool>& visited, const vector<bool>& cat){
+	if (visited[p]) {
+		return count;
+	}
 
-	if cat[p] is 1:
-		catsNum = catsNum + 1
-		if catsNum > m:
-			return count
-	else:
-		catsNum = 0
+	visited[p] = true;
 
-	if len(tree[p]) is 1 and p is not 1:
-		return count + 1
+	if (cat[p]) {
+		catsNum = catsNum + 1;
+		if (catsNum > m)
+			return count;
+	}
+	else {
+		catsNum = 0;
+	}
 
-	for x in tree[p]:
-		count = goRstr(x, catsNum, count)
+	if (relArr[p].size() == 1 && p != 1){ 
+		return count + 1;
+	}
 
-	return count
-	*/
+	for (int i = 0; i < relArr[p].size(); ++i){ 
+		count = goRstr(relArr, relArr[p][i], catsNum, count, visited, cat);
+	}
+
+	return count;
+}
 int main(){
 
-	int n, m;
+	int n;
 	cin >> n >> m;
 
 	vector<bool> cat;
@@ -37,39 +43,25 @@ int main(){
 		cat.push_back(c);
 	}
 
-	vector<int> relArr(n+1);
+	vector<vector<int> > relArr;
+	relArr.resize(n + 1);
 
-	for(int i=0; i < n; ++i){
+	for(int i=0; i < n - 1; ++i){
 		int x, y;
 		cin >> x >> y;
-		relArr[x].push_back[y];
-		relArr[y].push_back[x];
+		relArr[x].push_back(y);
+		relArr[y].push_back(x);
 	}
 
-	for(int i=0; i < n; ++i){
-		cout << relArr[i] << "\n";
+	vector<bool> visited(n + 1);
+	cout << goRstr(relArr, 1, 0, 0, visited, cat);
+	/*for(int i=1; i < n + 1; ++i){
+		cout << i << " : ";
+		for(int y=0; y < relArr[i].size(); ++y){
+			cout << relArr[i][y] << " "; 
+		}
+		cout << "\n";
 	}
-
+	*/
 	return 0;
 }
-/*
-n, m = list(map(int, input().split()))
-cat = list(map(int, input().split()))
-cat.insert(0,0)
-tree = {}
-count = 0
-visit = set()
-for _ in range(n-1):
-	x, y = list(map(int, input().split()))
-	if x not in tree:
-		tree[x] = []
-	if y not in tree:
-		tree[y] = []
-
-	tree[x].append(y)
-	tree[y].append(x)
-
-
-count = goRstr(1, 0, count)
-
-print(count)*/

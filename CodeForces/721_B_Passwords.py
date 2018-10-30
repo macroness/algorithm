@@ -28,4 +28,3 @@ minSec = (((minEnter-1)//k)*5) + minEnter
 maxSec = (((maxEnter-1)//k)*5) + maxEnter
 
 print(minSec, maxSec)
-

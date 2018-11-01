@@ -14,7 +14,6 @@ for i in range(n + 1, 51):
 	if isPrime(i) is True:
 		if i == m:
 			res = True
-
 		break
 
 if res:

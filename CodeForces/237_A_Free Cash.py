@@ -14,4 +14,6 @@ for _ in range(n):
         count = 1
     prevMin = m
 
+if maxCount < count:
+    maxCount = count
 print(maxCount)

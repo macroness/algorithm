@@ -4,6 +4,7 @@
 using namespace std;
 
 static int m;
+
 int goRstr(const vector<vector<int> >& relArr, const int p, int catsNum, int count, vector<bool>& visited, const vector<bool>& cat){
 	if (visited[p]) {
 		return count;

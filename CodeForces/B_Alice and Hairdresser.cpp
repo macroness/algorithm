@@ -8,6 +8,7 @@ int main() {
 	map<int, int> shortHair;
 	int n, m, p;
 	cin >> n >> m >> p;
+
 	for (int i = 0; i < n; ++i) {
 		int t;
 		cin >> t;

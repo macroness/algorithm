@@ -45,5 +45,6 @@ for x in kList:
             resList = resList + d[kList[0]]
 
 print(len(resList))
+
 for x in resList:
     print(x + 1, end=' ')

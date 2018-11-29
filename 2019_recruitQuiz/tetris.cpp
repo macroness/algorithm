@@ -11,78 +11,85 @@ Tetris::Block::Block(std::string name) {
 	switch (blockName) {
 	case 'A':
 	{
-		char blockA[4][4] = {
+		char srcBlock[4][4] = {
 		{'.', '.', '.', '.'},
 		{'A', 'A', 'A', 'A'},
 		{'.', '.', '.', '.'},
 		{'.', '.', '.', '.'}
 		};
+		memcpy(block, srcBlock, sizeof(block));
 		rotation(rotationNum);
 	}
 	break;
 	case 'B':
 	{
-		char blockA[4][4] = {
+		char srcBlock[4][4] = {
 		{'.', '.', '.', '.'},
 		{'B', 'B', 'B', '.'},
 		{'.', 'B', '.', '.'},
 		{'.', '.', '.', '.'}
 		};
+		memcpy(block, srcBlock, sizeof(block));
 		rotation(rotationNum);
 	}
 	break;
 	case 'C':
 	{
-		char blockA[4][4] = {
+		char srcBlock[4][4] = {
 		{'.', '.', '.', '.'},
 		{'.', 'C', 'C', '.'},
 		{'.', 'C', 'C', '.'},
 		{'.', '.', '.', '.'}
 		};
+		memcpy(block, srcBlock, sizeof(block));
 		rotation(rotationNum);
 	}
 	break;
 	case 'D':
 	{
-		char blockA[4][4] = {
+		char srcBlock[4][4] = {
 		{'.', '.', '.', '.'},
 		{'D', 'D', '.', '.'},
 		{'.', 'D', 'D', '.'},
 		{'.', '.', '.', '.'}
 		};
+		memcpy(block, srcBlock, sizeof(block));
 		rotation(rotationNum);
 	}
 	break;
 	case 'E':
 	{
-		char blockA[4][4] = {
+		char srcBlock[4][4] = {
 		{'.', '.', '.', '.'},
 		{'.', 'E', 'E', '.'},
 		{'E', 'E', '.', '.'},
 		{'.', '.', '.', '.'}
 		};
+		memcpy(block, srcBlock, sizeof(block));
 		rotation(rotationNum);
 	}
 	break;
 	case 'F':
 	{
-		char blockA[4][4] = {
+		char srcBlock[4][4] = {
 		{'.', '.', '.', '.'},
 		{'F', 'F', 'F', '.'},
 		{'.', '.', 'F', '.'},
 		{'.', '.', '.', '.'}
 		};
+		memcpy(block, srcBlock, sizeof(block));
 		rotation(rotationNum);
 	}
 	break;
 	case 'G':
 	{
-		char blockA[4][4] = {
+		char srcBlock[4][4] = {
 		{'.', '.', '.', '.'},
 		{'.', '.', 'G', '.'},
 		{'G', 'G', 'G', '.'},
 		{'.', '.', '.', '.'}
 		};
+		memcpy(block, srcBlock, sizeof(block));
 		rotation(rotationNum);
 	}
 	break;
@@ -98,6 +105,7 @@ static void swapAB(char& a, char& b) {
 	a = b;
 	b = tmp;
 }
+
 void Tetris::Block::rotation(int n) {
 	for (int r = 0; r < n; ++r) {
 		// 전치행렬 만들기
@@ -118,21 +126,33 @@ void Tetris::Block::rotation(int n) {
 
 void Tetris::Block::setPosition() {
 	// 가장 왼쪽 위에있는 블럭위치 찾기
+	bool loopEnd = false;
 	for (int i = 0; i < 4; ++i) {
 		for (int j = 0; j < 4; ++j) {
 			if (block[j][i] != '.') {
 				leftX = j;
 				leftY = i;
+				loopEnd = true;
+				break;
 			}
+		}
+		if (loopEnd) {
+			break;
 		}
 	}
 
 	// 기준이 되는 블럭의 위치에서 몇칸 위로 더 그려야 되는지 확인
+	loopEnd = false;
 	for (int i = 0; i < 4; ++i) {
 		for (int j = 0; j < 4; ++j) {
 			if (block[i][j] != '.') {
 				h = leftX - i;
+				loopEnd = true;
+				break;
 			}
+		}
+		if (loopEnd) {
+			break;
 		}
 	}
 }
@@ -177,14 +197,15 @@ Tetris::Tetris() {
 	blockMap["G1"] = Block("G1");
 	blockMap["G2"] = Block("G2");
 	blockMap["G3"] = Block("G3");
+}
+
+Tetris::~Tetris() {
 
 }
 
-
-
 int main() {
 
-
+	Tetris tt;
 
 	return 0;
 

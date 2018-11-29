@@ -91,6 +91,29 @@ Tetris::Block::Block(std::string name) {
 	}
 }
 
+static void swapAB(char& a, char& b) {
+	char tmp = a;
+	a = b;
+	b = tmp;
+}
+void Tetris::Block::rotation(int n) {
+	for (int r = 0; r < n; ++r) {
+		// 전치행렬 만들기
+		for (int i = 1; i < 4; ++i) {
+			for (int j = 0; j < i; ++j) {
+				swapAB(block[i][j], block[j][i]);
+			}
+		}
+
+		// 위아래 바꾸기
+		for (int i = 0; i < 2; ++i) {
+			for (int j = 0; j < 4; ++j) {
+				swapAB(block[i][j], block[3 - i][j]);
+			}
+		}
+	}
+}
+
 Tetris::Tetris() {
 	for (int i = 0; i < 13; ++i) {
 		for (int j = 0; j < 9; ++j) {

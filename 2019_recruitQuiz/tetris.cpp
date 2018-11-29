@@ -89,6 +89,8 @@ Tetris::Block::Block(std::string name) {
 	default :
 		break;
 	}
+
+	setPosition();
 }
 
 static void swapAB(char& a, char& b) {
@@ -109,6 +111,27 @@ void Tetris::Block::rotation(int n) {
 		for (int i = 0; i < 2; ++i) {
 			for (int j = 0; j < 4; ++j) {
 				swapAB(block[i][j], block[3 - i][j]);
+			}
+		}
+	}
+}
+
+void Tetris::Block::setPosition() {
+	// 가장 왼쪽 위에있는 블럭위치 찾기
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			if (block[j][i] != '.') {
+				leftX = j;
+				leftY = i;
+			}
+		}
+	}
+
+	// 기준이 되는 블럭의 위치에서 몇칸 위로 더 그려야 되는지 확인
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			if (block[i][j] != '.') {
+				h = leftX - i;
 			}
 		}
 	}

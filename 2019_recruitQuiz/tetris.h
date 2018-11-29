@@ -15,6 +15,7 @@ private:
 
 	private:
 		void rotation(int n);
+		void setPosition();
 	public:
 		char block[4][4];
 		int leftX; // 왼쪽에서 가장 높은 위치 x좌표

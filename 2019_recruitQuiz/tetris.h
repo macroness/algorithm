@@ -29,7 +29,7 @@ private:
 	};
 
 private:
-	void setBlock(Block* b, const int y);
+	void setBlock(Block* b);
 	void printField();
 	void downBlock(Block* b);
 	bool checkConflict(const Block& b);

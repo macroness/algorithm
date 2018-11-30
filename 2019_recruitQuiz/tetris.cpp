@@ -218,10 +218,7 @@ bool Tetris::checkConflict(const Block& b) {
 	return true;
 }
 
-void Tetris::setBlock(Block* b, const int y) {
-	// 높이만큼 기준점 좌표가 내려가고 y는 주어진대로.
-	b->currentX = b->h;
-	b->currentY = y;
+void Tetris::setBlock(Block* b) {
 
 	if (checkConflict(*b)) {
 		// bX,Y : block을 그릴 블럭의 좌표
@@ -249,6 +246,13 @@ void Tetris::setBlock(Block* b, const int y) {
 
 void Tetris::printField() {
 
+	for (int i = 1; i < 13; ++i) {
+		for (int j = 1; j < 9; ++j) {
+			std::cout << field[i][j];
+		}
+		std::cout << "\n";
+	}
+
 }
 
 void Tetris::downBlock(Block* b) {
@@ -260,11 +264,21 @@ void Tetris::pushBlock(const std::string blockInfo) {
 	std::size_t beginPos = blockInfo.find_first_of('(');
 	while (beginPos != std::string::npos) {
 		const std::string blockName = blockInfo.substr(beginPos + 1, 2);
+		const int firstPos = std::stoi(blockInfo.substr(beginPos + 4, 1));
 		Block b(blockMap[blockName]);
 
-		setBlock(&b, std::stoi(blockInfo.substr(beginPos + 4, 1)));
+		// 높이만큼 기준점 좌표가 내려가고 y는 주어진대로.
+		b.currentX = b.h + 1;
+		b.currentY = firstPos;
 
+		setBlock(&b);
+
+
+		std::cout << "================================\n";
+		std::cout << "blockName = " << blockName << "\n";
+		std::cout << "position  = " << firstPos << "\n";
 		printField();
+		std::cout << "--------------------------------\n";
 
 		downBlock(&b);
 
@@ -279,6 +293,7 @@ int main() {
 
 	Tetris tt;
 
+	tt.pushBlock("(D3,5)");
 	return 0;
 
 }

@@ -211,16 +211,33 @@ bool Tetris::checkConflict(const Block& b) {
 	for (int bX = b.leftX - b.h, fX = b.currentX - b.h; bX < 4 && fX < 14; ++bX, ++fX) {
 		for (int bY = b.leftY, fY = b.currentY; bY < 4 && fY < 10; ++bY, ++fY) {
 			if (b.block[bX][bY] != '.' && field[fX][fY] != '.') {
-				return false;
+				return true;
 			}
 		}
 	}
-	return true;
+	return false;
+}
+
+void Tetris::situateBlockInField(Block* b) {
+	// bX,Y : block을 그릴 블럭의 좌표
+	// fX,Y : block이 그려질 field의 좌표
+	for (int bX = b->leftX - b->h, fX = b->currentX - b->h; bX < 4 && fX < 14; ++bX, ++fX) {
+		for (int bY = b->leftY, fY = b->currentY; bY < 4 && fY < 10; ++bY, ++fY) {
+			if (b->block[bX][bY] != '.') {
+				field[fX][fY] = b->block[bX][bY];
+				// 기준인 left를 그리고있다면 현재 field자리를 block에 저장한다.(currnetX,Y)
+				if (bX == b->leftX && bY == b->leftY) {
+					b->currentX = fX;
+					b->currentY = fY;
+				}
+			}
+		}
+	}
 }
 
 void Tetris::setBlock(Block* b) {
 
-	if (checkConflict(*b)) {
+	if (!checkConflict(*b)) {
 		// bX,Y : block을 그릴 블럭의 좌표
 		// fX,Y : block이 그려질 field의 좌표
 		for (int bX = b->leftX - b->h, fX = b->currentX - b->h; bX < 4 && fX < 14; ++bX, ++fX) {
@@ -240,8 +257,6 @@ void Tetris::setBlock(Block* b) {
 		std::cout << "잘못된 입력입니다.\n";
 		assert(false);
 	}
-
-
 }
 
 void Tetris::printField() {
@@ -256,7 +271,14 @@ void Tetris::printField() {
 }
 
 void Tetris::downBlock(Block* b) {
+	b->currentX++;
 
+	while (!checkConflict(*b)) {
+		b->currentX++;
+	}
+
+	b->currentX--;
+	situateBlockInField(b);
 }
 
 void Tetris::pushBlock(const std::string blockInfo) {
@@ -271,18 +293,26 @@ void Tetris::pushBlock(const std::string blockInfo) {
 		b.currentX = b.h + 1;
 		b.currentY = firstPos;
 
+		// 처음에 시작지점에 블럭을 그리는 것은 실제로 그리는게 아니기 때문에 그리기 전 field를 갖고있다가 down하기전 덮어 쓴다.
+		char tmpField[14][10] = { '0' };
+		memcpy(tmpField, field, sizeof(field));
+
 		setBlock(&b);
 
 
 		std::cout << "================================\n";
 		std::cout << "blockName = " << blockName << "\n";
 		std::cout << "position  = " << firstPos << "\n";
+
 		printField();
+
 		std::cout << "--------------------------------\n";
 
+		memcpy(field, tmpField, sizeof(field));
 		downBlock(&b);
 
 		printField();
+		std::cout << "================================\n";
 
 		beginPos = blockInfo.find_first_of('(', beginPos + 1);
 	}

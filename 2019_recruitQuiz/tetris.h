@@ -29,10 +29,11 @@ private:
 	};
 
 private:
+	bool checkConflict(const Block& b);
+	void situateBlockInField(Block* b);
 	void setBlock(Block* b);
 	void printField();
 	void downBlock(Block* b);
-	bool checkConflict(const Block& b);
 
 private:
 	char field[14][10];

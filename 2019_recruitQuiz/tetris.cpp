@@ -1,8 +1,10 @@
 #include <iostream>
+#include <assert.h>
 
 #include "tetris.h"
 
-
+Tetris::Block::Block() : block(), leftX(0), leftY(0), currentX(0), currentY(0), h(0) {
+}
 
 Tetris::Block::Block(const std::string name) {
 	const char blockName = name[0];
@@ -203,7 +205,45 @@ Tetris::~Tetris() {
 
 }
 
-void Tetris::setBlock(const std::string blockName, const int y) {
+bool Tetris::checkConflict(const Block& b) {
+	// bX,Y : block을 그릴 블럭의 좌표
+	// fX,Y : block이 그려질 field의 좌표
+	for (int bX = b.leftX - b.h, fX = b.currentX - b.h; bX < 4 && fX < 13; ++bX, ++fX) {
+		for (int bY = b.leftY, fY = b.currentY; bY < 4 && fY < 9; ++bY, ++fY) {
+			if (b.block[bX][bY] != '.' && field[fX][fY] != '.') {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+void Tetris::setBlock(Block* b, const int y) {
+	// 높이만큼 기준점 좌표가 내려가고 y는 주어진대로.
+	b->currentX = b->h;
+	b->currentY = y;
+
+	if (checkConflict(*b)) {
+		// bX,Y : block을 그릴 블럭의 좌표
+		// fX,Y : block이 그려질 field의 좌표
+		for (int bX = b->leftX - b->h, fX = b->currentX - b->h; bX < 4 && fX < 13; ++bX, ++fX) {
+			for (int bY = b->leftY, fY = b->currentY; bY < 4 && fY < 9; ++bY, ++fY) {
+				if (b->block[bX][bY] != '.') {
+					field[fX][fY] = b->block[bX][bY];
+					// 기준인 left를 그리고있다면 현재 field자리를 block에 저장한다.(currnetX,Y)
+					if (bX == b->leftX && bY == b->leftY) {
+						b->currentX = fX;
+						b->currentY = fY;
+					}
+				}
+			} 
+		}
+	}
+	else {
+		std::cout << "잘못된 입력입니다.\n";
+		assert(false);
+	}
+
 
 }
 
@@ -211,7 +251,7 @@ void Tetris::printField() {
 
 }
 
-void Tetris::downBlock() {
+void Tetris::downBlock(Block* b) {
 
 }
 
@@ -220,12 +260,13 @@ void Tetris::pushBlock(const std::string blockInfo) {
 	std::size_t beginPos = blockInfo.find_first_of('(');
 	while (beginPos != std::string::npos) {
 		const std::string blockName = blockInfo.substr(beginPos + 1, 2);
+		Block b(blockMap[blockName]);
 
-		setBlock(blockName, std::stoi(blockInfo.substr(beginPos + 4, 1)));
+		setBlock(&b, std::stoi(blockInfo.substr(beginPos + 4, 1)));
 
 		printField();
 
-		downBlock();
+		downBlock(&b);
 
 		printField();
 

@@ -35,6 +35,6 @@ private:
 	bool checkConflict(const Block& b);
 
 private:
-	char field[13][9];
+	char field[14][10];
 	std::map<std::string, Block> blockMap;
 };

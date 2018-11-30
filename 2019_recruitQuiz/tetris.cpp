@@ -160,9 +160,9 @@ void Tetris::Block::setPosition() {
 }
 
 Tetris::Tetris() {
-	for (int i = 0; i < 13; ++i) {
-		for (int j = 0; j < 9; ++j) {
-			if (i == 0 || i == 12 || j == 0 || j == 8) {
+	for (int i = 0; i < 14; ++i) {
+		for (int j = 0; j < 10; ++j) {
+			if (i == 0 || i == 13 || j == 0 || j == 9) {
 				field[i][j] = 'X'; // 가장자리 표시
 			}
 			else {
@@ -208,8 +208,8 @@ Tetris::~Tetris() {
 bool Tetris::checkConflict(const Block& b) {
 	// bX,Y : block을 그릴 블럭의 좌표
 	// fX,Y : block이 그려질 field의 좌표
-	for (int bX = b.leftX - b.h, fX = b.currentX - b.h; bX < 4 && fX < 13; ++bX, ++fX) {
-		for (int bY = b.leftY, fY = b.currentY; bY < 4 && fY < 9; ++bY, ++fY) {
+	for (int bX = b.leftX - b.h, fX = b.currentX - b.h; bX < 4 && fX < 14; ++bX, ++fX) {
+		for (int bY = b.leftY, fY = b.currentY; bY < 4 && fY < 10; ++bY, ++fY) {
 			if (b.block[bX][bY] != '.' && field[fX][fY] != '.') {
 				return false;
 			}
@@ -226,8 +226,8 @@ void Tetris::setBlock(Block* b, const int y) {
 	if (checkConflict(*b)) {
 		// bX,Y : block을 그릴 블럭의 좌표
 		// fX,Y : block이 그려질 field의 좌표
-		for (int bX = b->leftX - b->h, fX = b->currentX - b->h; bX < 4 && fX < 13; ++bX, ++fX) {
-			for (int bY = b->leftY, fY = b->currentY; bY < 4 && fY < 9; ++bY, ++fY) {
+		for (int bX = b->leftX - b->h, fX = b->currentX - b->h; bX < 4 && fX < 14; ++bX, ++fX) {
+			for (int bY = b->leftY, fY = b->currentY; bY < 4 && fY < 10; ++bY, ++fY) {
 				if (b->block[bX][bY] != '.') {
 					field[fX][fY] = b->block[bX][bY];
 					// 기준인 left를 그리고있다면 현재 field자리를 block에 저장한다.(currnetX,Y)

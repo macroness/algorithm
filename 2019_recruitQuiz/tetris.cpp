@@ -4,7 +4,7 @@
 
 
 
-Tetris::Block::Block(std::string name) {
+Tetris::Block::Block(const std::string name) {
 	const char blockName = name[0];
 	const int rotationNum = name[1] - '0';
 
@@ -200,6 +200,37 @@ Tetris::Tetris() {
 }
 
 Tetris::~Tetris() {
+
+}
+
+void Tetris::setBlock(const std::string blockName, const int y) {
+
+}
+
+void Tetris::printField() {
+
+}
+
+void Tetris::downBlock() {
+
+}
+
+void Tetris::pushBlock(const std::string blockInfo) {
+
+	std::size_t beginPos = blockInfo.find_first_of('(');
+	while (beginPos != std::string::npos) {
+		const std::string blockName = blockInfo.substr(beginPos + 1, 2);
+
+		setBlock(blockName, std::stoi(blockInfo.substr(beginPos + 4, 1)));
+
+		printField();
+
+		downBlock();
+
+		printField();
+
+		beginPos = blockInfo.find_first_of('(', beginPos + 1);
+	}
 
 }
 

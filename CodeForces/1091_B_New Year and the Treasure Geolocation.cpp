@@ -1,57 +1,47 @@
 #include <iostream>
-#include <map>
+#include <set>
 #include <vector>
 
 using namespace std;
 
-struct A {
-	int x;
-	int y;
-
-	A operator+(const A& rhs) {
-		A a;
-		a.x = x + rhs.x;
-		a.y = y + rhs.y;
-		return a;
-	}
-
-	bool operator==(const A& rhs) {
-		if (x == rhs.x && y == rhs.y) {
-			return true;
-		}
-		return false;
-	}
-};
-
-bool findCoor(const int i, const int j) {
-
-}
-
-static vector<A> obel;
-static vector<A> clue;
 int main() {
 	int n;
 	cin >> n;
 
-	for (int i = 0; i < n; ++i) {
-		A a;
-		cin >> a.x >> a.y;
-		obel.push_back(a);
-	}
+	set<pair<int,int>> obels;
 
 	for (int i = 0; i < n; ++i) {
-		A a;
-		cin >> a.x >> a.y;
-		clue.push_back(a);
+		pair<int,int> a;
+		cin >> a.first >> a.second;
+		obels.insert(a);
 	}
 
-	A pre;
+	vector<pair<int,int>> clues;
 	for (int i = 0; i < n; ++i) {
-		for (int j = 0; j < n; ++j) {
-			
+		pair<int,int> a;
+		cin >> a.first >> a.second;
+		clues.push_back(a);
+	}
+
+	pair<int,int> result;
+	for (auto obel : obels) {
+		result.first = obel.first + clues[0].first;
+		result.second = obel.second + clues[0].second;
+
+		bool found = true;
+		for (int i = 0; i < n; ++i) {
+			if (!obels.count({ result.first - clues[i].first, result.second - clues[i].second })) {
+				found = false;
+				break;
+			}
+		}
+
+		if (found) {
+			break;
 		}
 	}
 
+	cout << result.first << " " << result.second;
 
 	return 0;
 }
